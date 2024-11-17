@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "printout.h"
 
 int loadSaved(struct node* nodes, char* path){           //loads single node from saved file
     int len = 0;
@@ -54,6 +55,32 @@ int loadSaved(struct node* nodes, char* path){           //loads single node fro
             }
         }
     }
+
+    fclose(filePtr);
+    return len;
+}
+
+int saveLoaded(struct node* root, char path[]){
+    int len = 1;
+    FILE *filePtr;
+    filePtr = fopen(path, "w");
+
+    struct node nodeList[] = {createNodeList()};
+    if (nodeList == NULL){
+        return -1;                                                              //not enough memory
+    } 
+
+    int isListOk = parseTreeToArray(root, nodeList, &len);
+    if (isListOk == 0){
+        printf("succesfully parsed %d nodes\n", len);
+        for (int i = 0; i < len; i++){
+            printNode(nodeList[i]);
+        }
+    }
+    else{
+        printf("failed");
+    }
+
 
     fclose(filePtr);
     return len;

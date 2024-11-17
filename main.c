@@ -26,5 +26,7 @@ int main(){
         printf("Succesfuly loaded %d nodes.", nodesLen);
     }
 
+    int savedLen = saveLoaded(root, "/media/pasta/SCHOOL/VUT/2024-2025/Winter/PC1T/ProjektPCT/test1.txt");
+
     return 0;
 }

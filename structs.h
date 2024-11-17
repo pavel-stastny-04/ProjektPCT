@@ -14,5 +14,8 @@ struct node {                                           //defauld node structure
 struct node* createNode();
 void delNode(struct node* node);
 struct node* findNodeById(struct node* root, int ID);
+int parseTreeToArray(struct node* root, struct node* list, int* len);
+struct node* createNodeList();
+void delNodeList(struct node* list);
 
 #endif
