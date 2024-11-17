@@ -2,28 +2,29 @@
 #include "printout.h"
 #include "structs.h"
 #include "filehandler.h"
+#include <ctype.h>
+#include <stdlib.h>
 
 int main(){
-    printf("Hello, World!\n\n");
-    printNum(5);
-
-    struct node s1;
-    s1.ID = 2;
-
-    struct node s2;
-    s2.ID = 1;
-    s2.childOne = &s1;
-    s1.parent = &s2;
-
-    printf("%d\n", s1.ID);
-    printf("%x\n", s1.parent);
-    printf("%x\n", s1.childOne);
-    printf("%x\n", s1.childTwo);
-    printf("%d\n", s2.ID);
-    printf("%x\n", s2.parent);
-    printf("%x\n", s2.childOne);
-    printf("%x\n", s2.childTwo);
+    struct node* root = createNode();
+    if (root == NULL){
+        printf("Not enought memory, exiting application...");
+        return 1;                                                       //return error value 1 for insuficient memory
+    }
     
+    int nodesLen = loadSaved(root, "/media/pasta/SCHOOL/VUT/2024-2025/Winter/PC1T/ProjektPCT/test.txt");
+    if (nodesLen == -1){
+        printf("Error reading file: No such file");
+    } 
+    else if (nodesLen == -2){
+        printf("Error reading file: File cursed");
+    }
+    else if (nodesLen == -3){
+        printf("Error reading file: Insufficient memory");
+    }
+    else{
+        printf("Succesfuly loaded %d nodes.", nodesLen);
+    }
 
     return 0;
 }

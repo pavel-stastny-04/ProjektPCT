@@ -2,65 +2,59 @@
 #include <stdio.h>
 #include "structs.h"
 #include <ctype.h>
+#include <ctype.h>
+#include <stdlib.h>
 
-int loadSaved(struct node node, int id){           //loads single node from saved file
+int loadSaved(struct node* nodes, char* path){           //loads single node from saved file
+    int len = 0;
     FILE *filePtr;
-    filePtr = fopen("myTree.csv", "r");
+    filePtr = fopen(path, "r");
 
-    if (filePtr == NULL){                   //stops loading, when the file does not exist
+    if (filePtr == NULL){                                           //stops loading, when the file does not exist
         printf("Nothing is saved for the specified file!");
-        return 1;
+        return -1;                                                  //the file does not exist, could not load
     }
 
-    char fileLine[20];
+    else{
+        int ID = 0;
+        int parent_i = 0;
+        int child1 = 0;                                                     //if any child is 0, then do not give pointer to root, but give NULL
+        int child2 = 0;
+        int ok = fscanf(filePtr, "%d, %d, %d, %d\n", &ID, &parent_i, &child1, &child2);
+        nodes->ID = ID;
+        nodes->parent_i = parent_i;
+        nodes->child1 = child1;
+        nodes->child2 = child2;
+        struct node* prev = nodes;
 
-    while (fgets(fileLine, 20, filePtr)){   //goes over all the lines of the specified file
-        if (atoi(fileLine[0]) == id){      //in the line search for given id
-            char numChar[4];                //variable for temporary value storage
-            char numCharPos = 0;
-            char pos = 0;                   //variable for position of current argument (char is used only for memory saving purpose, value is number)
-            for (int i = 0; i <= 20; i++){
-                if (isdigit(fileLine[i]) && numCharPos < 3){
-                    numChar[numCharPos] = fileLine[i];
-                    numCharPos++;
+        while (ok >= 3){
+            len++;
+            struct node* newNode = createNode();
+            
+            if (newNode != NULL){
+                ok = fscanf(filePtr, "%d, %d, %d, %d", &ID, &parent_i, &child1, &child2);
+                
+                newNode->ID = ID;
+                newNode->parent = findNodeById(nodes, parent_i);
+                newNode->parent_i = parent_i;
+                if (newNode->parent->child1 == ID){
+                    newNode->parent->childOne = newNode;
                 }
-                else {
-                    if (fileLine[i] = '\n' && pos > 3){
-                        break;
-                    }
-                    else if (fileLine[i] = ','){
-                        numChar[numCharPos] = '\0';
-                        numCharPos = 0;
-                        switch (pos)
-                        {
-                        case 0:
-                            /* code */   //todo: opravit strukturu, aby obsahovala id krome adresy, vytvořit funkci pro doplnovani struktur a funkci pro ukladani
-                            break;
-                        case 1:
-                            /* code */
-                            break;
-                        case 2:
-                            /* code */
-                            break;
-                        case 3:
-                            /* code */
-                            break;
-                        
-                        default:
-                            break;
-                        }
-                        pos++;
-                    }
+                else if (newNode->parent->child2 == ID){
+                    newNode->parent->childTwo = newNode;
                 }
+                else{
+                    return -2;                                                  //the file is cursed, cannot load
+                }
+                newNode->child1 = child1;
+                newNode->child2 = child2;
             }
-            break;
-
+            else {
+                return -3;                                                      //not enought memory to load file into
+            }
         }
     }
 
-
-
-
     fclose(filePtr);
-    return 0;
+    return len;
 }

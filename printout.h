@@ -1,6 +1,7 @@
 #ifndef PRINTOUT_H
 #define PRINTOUT_H
+#include "structs.h"
 
-extern void printNum(int x);
+void printNode(struct node nodeP);
 
 #endif
