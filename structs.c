@@ -44,16 +44,47 @@ struct node* findNodeById(struct node* root, int ID){           //finds address 
     }
 }
 
-int parseTreeToArray(struct node* root, struct node list[], int* len){      //parse structures to array of their pointers
+struct node* parseTreeToArray(struct node* root, int* len){      //parse structures to array of their pointers
     if (root == NULL && *len <= 0){
-        return -1;                                                          //for NULL input theres nothing to do
+        return NULL;                                                          //for NULL input theres nothing to do
     }
     else {
+        struct node* list;
+        list = (struct node*) malloc(sizeof(struct node*));
+        list = root;
+        struct node* prewRoot = root;
+        struct node* childOne = prewRoot->childOne;
+        struct node* childTwo = prewRoot->childTwo;
+        while (prewRoot != NULL){
+            s;
+        }
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         list[*len - 1] = *root;
         if (root->childOne != NULL){
-            len++;
-            printf("%d", sizeof(root));
-            list = realloc(list, *len * sizeof(struct node*));
+            *len += 1;
+            int lenSize = *len;
+            int testSize = lenSize * sizeof(root);
+            printf("ok");
+            list = realloc(list, lenSize * sizeof(root));
             if (list == NULL){
                 return -2;
             }

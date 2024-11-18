@@ -7,10 +7,10 @@
 void printNode(struct node nodeP){
     printf("ID: %d\n", nodeP.ID);
     printf("Parent_i: %d\n", nodeP.parent_i);
-    printf("Parent: %x\n", nodeP.parent);
+    printf("Parent: %p\n", nodeP.parent);
     printf("Child1: %d\n", nodeP.child1);
-    printf("ChildOne: %x\n", nodeP.childOne);
+    printf("ChildOne: %p\n", nodeP.childOne);
     printf("Child2: %d\n", nodeP.child2);
-    printf("ChildTwo: %x\n\n", nodeP.childTwo);
+    printf("ChildTwo: %p\n\n", nodeP.childTwo);
     return;
 }
