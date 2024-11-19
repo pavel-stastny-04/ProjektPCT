@@ -14,19 +14,19 @@ int main(){
     
     int nodesLen = loadSaved(root, "/media/pasta/SCHOOL/VUT/2024-2025/Winter/PC1T/ProjektPCT/test.txt");
     if (nodesLen == -1){
-        printf("Error reading file: No such file");
+        printf("\nError reading file: No such file");
     } 
     else if (nodesLen == -2){
-        printf("Error reading file: File cursed");
+        printf("\nError reading file: File cursed");
     }
     else if (nodesLen == -3){
-        printf("Error reading file: Insufficient memory");
+        printf("\nError reading file: Insufficient memory");
     }
     else{
-        printf("Succesfuly loaded %d nodes.", nodesLen);
+        printf("\nSuccesfuly loaded %d nodes.", nodesLen);
     }
 
-    int savedLen = saveLoaded(root, "/media/pasta/SCHOOL/VUT/2024-2025/Winter/PC1T/ProjektPCT/test1.txt");
+    printf("\nSuccessfully saved %d nodes.", saveLoaded(root, "/media/pasta/SCHOOL/VUT/2024-2025/Winter/PC1T/ProjektPCT/test1.txt"));
 
     return 0;
 }

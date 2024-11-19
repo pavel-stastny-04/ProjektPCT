@@ -60,28 +60,56 @@ int loadSaved(struct node* nodes, char* path){           //loads single node fro
     return len;
 }
 
+int saveNode(FILE* file, struct node* node){
+    if (fprintf(file, "%d, %d, %d, %d\n", node->ID, node->parent_i, node->child1, node->child2) > 0){
+        return 0;
+    }
+    else{
+        return 1;                                                               //for some occasion unable to vrite into file
+    }
+}
+
+int saveNodes(FILE* file, struct node* root, int* cnt){
+    if (file == NULL){
+        return -1;
+    }
+    if (root == NULL){
+        return 0;                                                               //return 0 when reach NULL pointer
+    }
+    else{
+        if (saveNode(file, root) == 0){
+            int ch1 = saveNodes(file, root->childOne, cnt);
+            int ch2 = saveNodes(file, root->childTwo, cnt);
+            if (ch1 > 0 && ch2 > 0){
+                *cnt += 2;
+            }
+            else if (ch1 > 0 || ch2 > 0){
+                *cnt += 1;
+            }
+            return 1;                                                           //saved successfully
+        }
+        else{
+            return -2;                                                          //unable to save
+        }
+    }
+}
+
 int saveLoaded(struct node* root, char path[]){
     int len = 1;
     FILE *filePtr;
     filePtr = fopen(path, "w");
 
-    struct node nodeList[] = {createNodeList()};
-    if (nodeList == NULL){
-        return -1;                                                              //not enough memory
-    } 
+    int isOK = saveNodes(filePtr, root, &len);
+    
+    fclose(filePtr);
 
-    int isListOk = parseTreeToArray(root, nodeList, &len);
-    if (isListOk == 0){
-        printf("succesfully parsed %d nodes\n", len);
-        for (int i = 0; i < len; i++){
-            printNode(nodeList[i]);
-        }
+    if (isOK == 1){
+        return len;
+    }
+    else if (isOK == 0){
+        return -1;                                                                  //nothing to save, NULL given
     }
     else{
-        printf("failed");
+        return -2;                                                                  //failed to save some node(s)
     }
-
-
-    fclose(filePtr);
-    return len;
 }
