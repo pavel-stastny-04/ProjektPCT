@@ -15,3 +15,5 @@
 
 -error messages
     - "1" - not eough memory on init
+
+-Maty zkouší git
