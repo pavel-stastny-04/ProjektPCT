@@ -14,3 +14,7 @@ void printNode(struct node nodeP){
     printf("ChildTwo: %p\n\n", nodeP.childTwo);
     return;
 }
+
+void help(){
+    printf("Helped");
+}

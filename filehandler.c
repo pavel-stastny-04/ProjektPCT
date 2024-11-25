@@ -1,7 +1,6 @@
-# include "filehandler.h"
+#include "filehandler.h"
 #include <stdio.h>
 #include "structs.h"
-#include <ctype.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include "printout.h"
