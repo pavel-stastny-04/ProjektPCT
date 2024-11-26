@@ -17,7 +17,7 @@ int main(){
     char currentPath[2048] = "";
     int saved = 0;
     
-    while (uiAskCommand(root, current, currentPath, &saved));           //application mainloop
+    while (uiAskCommand(&root, &current, currentPath, &saved));           //application mainloop
 
     printf("Exiting application...");
 

@@ -32,7 +32,7 @@ int treeAddNode(struct node* root, int parentId, int childId){                  
                 parent->childTwo->parent_i = parentId;
                 return 0;
             }
-            return 3;                                                                   //Does not create a node, when given parent already has to chilren
+            return 3;                                                                   //Does not create a node, when given parent already has two chilren
         }
     }
 }
@@ -40,6 +40,14 @@ int treeAddNode(struct node* root, int parentId, int childId){                  
 
 void treeDelNodes(struct node* root){                                                //recursively delete all nodes under given node
     if (root->childOne == NULL && root->childTwo == NULL){
+        if (root->parent->childOne == root){
+            root->parent->childOne = NULL;
+            root->parent->child1 = 0;
+        }
+        else if (root->parent->childTwo == root){
+            root->parent->childTwo = NULL;
+            root->parent->child2 = 0;
+        }
         delNode(root);
     }
     else{

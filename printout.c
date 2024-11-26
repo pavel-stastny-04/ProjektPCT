@@ -16,7 +16,21 @@ void printNode(struct node nodeP){
 }
 
 void help(){                                            //prints help info
-    printf("Helped");
+    printf("BinaryTreeSoft has these commands with their parameters:\n");
+    printf("add [parent] [newid]    -> Create a new node\n");
+    printf("clear                   -> Clear the console\n");
+    printf("del [switch1] [switch2]\n");
+    printf("  del c                 -> Delete current node (only when it has no children)\n");
+    printf("  del c r               -> Delete current node\n");
+    printf("  del i [id]            -> Delete node with specified id\n");
+    printf("help                    -> Print out this help\n");
+    printf("load s [path]           -> Loads from specified file\n");
+    printf("print [switch1] [switch2]\n");
+    printf("  print a [*path]       -> print entire tree graphically (* print into given file path)\n");
+    printf("  print c [*path]       -> print current node (* print into given file path as append)\n");
+    printf("quit                    -> close BinaryTreeSoft (another option is to use \"q\")\n");
+    printf("save                    -> save tree into file from which was loaded\n");
+    printf("  save e [path]         -> save tree into specified file");
 }
 
 void printTree(struct node* tree){                                               //prints out the whole tree graphically

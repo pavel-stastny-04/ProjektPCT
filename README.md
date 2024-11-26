@@ -21,16 +21,16 @@
 --print
 ---a -> prints entire tree
 ---c -> prints current node
----fa [path] -> prints entire tree into file
----fc [path] -> prints current node into the file (append)
+---a [path] -> prints entire tree into file
+---c [path] -> prints current node into the file (append)
 --del
 ---c -> delete current node (if does not have children)
 ---c r -> delete current node and its children
 ---i [id] -> delete node with specified id (if does not have children), else asks if you want to continue
 --checkout [id] -> changes working node to given id
 --add [parent] [newId]-> creates new node with given id (if that id does not exist, or if parent has free space)
---load [path] -> load tree from given file
+--load s [path] -> load tree from given file
 --save -> saves tree into file from which it was loaded
----[path] -> save tree into given file
+---e [path] -> save tree into given file
 --clear -> clears the console
 --help -> prints out help for the app

@@ -9,7 +9,9 @@
 
 
 
-int uiAskCommand(struct node* root, struct node* current, char curentPath[], int* saved){                                                         //Asks user for command to do
+int uiAskCommand(struct node** root1, struct node** current1, char curentPath[], int* saved){                                                         //Asks user for command to do
+    struct node* current = *current1;
+    struct node* root = *root1;
     printf("\n-> ");
     char command[15] = "";          //main command to the program, like print, or add
     char switch1[15] = "";           //switch no 1 of given command
@@ -69,6 +71,9 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
             else if (strcmp(switch1, "c") == 0){
                 printNode(*current);
             }
+            else {
+                printf("Unknown argument for \"print\": %s", switch1);
+            }
             break;
         
         case 3:
@@ -77,6 +82,9 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
             }
             else if (strcmp(switch1, "c") == 0){
                 filePrintNode(current, switch2);
+            }
+            else {
+                printf("Unknown argument for \"print\": %s", switch1);
             }
             break;
         
@@ -94,11 +102,20 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
             break;
         
         case 2:
-            if (strcmp(switch1, "i") == 0){
-                printf("ok");
+            if (strcmp(switch1, "c") == 0){
+                int children = treeHasChildren(current);
+                if (children != 0){
+                    printf("Unable to delete node: Node has %d child(ren).\nTo remove it, try using \"del c r\" command.", children);
+                }
+                else{
+                    struct node* newCurrent = current->parent;
+                    treeDelNodes(current);
+                    current = newCurrent;
+                    *current1 = current;
+                }
             }
-            else if (strcmp(switch1, "c") == 0){
-                filePrintNode(current, switch2);
+            else {
+                printf("Unknown argument for \"del\": %s", switch1);
             }
             break;
         
@@ -106,26 +123,58 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
             if (strcmp(switch1, "i") == 0){
                 int id = atoi(switch2);
                 struct node* idStruct = findNodeById(root, id);
+                if (idStruct == NULL){
+                    printf("unable to delete node with id %d: Does not exist!", id);
+                    return 1;
+                }
                 int children = treeHasChildren(idStruct);
                 if (idStruct == root){
                     printf ("Cannot delete node with id %d, because it is root.", id);
+                    return 1;
                 }
-                else if (children != 0){
-                    char ansver = 'n';
+                if (children != 0){
+                    char answer = 'n';
                     printf("Selected node has %d children. Are you sure you want to delete it (y/n): ", children);
-                    scanf("%c", &ansver);
-                    if (ansver == 'y' || ansver == 'Y'){
+                    scanf("%c", &answer);
+                    if (answer == 'y' || answer == 'Y'){
                         treeDelNodes(idStruct);
+                        *root1 = root;
+                        *saved += 1;
                     }
+                }
+                else if (id == current->ID){
+                    printf("Could not remove working node ith this command.\nTry \"del c\" instead.");
+                    return 1;
+                }
+                else {
+                    treeDelNodes(idStruct);
+                    *root1 = root;
+                    *saved += 1;
                 }
             }
             else if (strcmp(switch1, "c") == 0){
-                filePrintNode(current, switch2);
+                if (strcmp(switch2, "r") == 0){
+                    if (current == root){
+                        printf ("Cannot delete this node, because it is root.");
+                        return 1;
+                    }
+                    struct node* newCurrent = current->parent;
+                    treeDelNodes(current);
+                    current = newCurrent;
+                    *current1 = current;
+                    *saved += 1;
+                }
+                else{
+                    printf("Unknown argument for \"del c\": %s", switch2);
+                }
+            }
+            else {
+                printf("Unknown argument for \"del\": %s", switch1);
             }
             break;
         
         default:
-            printf(" ");
+            printf("To many arguments. Del takes 2 arguments max, %d was given.", commandsNum - 1);
             break;
         }
         return 1;
@@ -134,19 +183,20 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
         switch (commandsNum)
         {
         case 1:
-            printf("checkout1");
+            printf("Not enought arguments. Checkout needs 1, 0 was given.");
             break;
-        
         case 2:
-            printf("checkout2");
+            int id = atoi(switch1);
+                struct node* idStruct = findNodeById(root, id);
+                if (idStruct == NULL){
+                    printf("unable to switch to node with id %d: Does not exist!", id);
+                    return 1;
+                }
+                current = idStruct;
+                *current1 = current;
             break;
-        
-        case 3:
-            printf("checkout3");
-            break;
-        
         default:
-            printf(" ");
+            printf("To many arguments. Checkout takes 1 argument, %d was given.", commandsNum - 1);
             break;
         }
         return 1;
@@ -155,19 +205,34 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
         switch (commandsNum)
         {
         case 1:
-            printf("add1");
+            printf("Not enought arguments. Add needs 2, 0 was given.");
             break;
-        
         case 2:
-            printf("add2");
+            printf("Not enought arguments. Add needs 2, 1 was given.");
             break;
         
         case 3:
-            printf("add3");
+            int passed = treeAddNode(root, atoi(switch1), atoi(switch2));
+            if (passed == 0){
+                printf("Successfully created node with parent %s and id %s", switch1, switch2);
+                return 1;
+                *saved += 1;
+            }else if(passed == 1){
+                printf("Failed to create node: ID %s is occupied", switch2);
+                return 1;
+            }
+            else if(passed == 2){
+                printf("Failed to create node: Parent with ID %s does not exist.", switch1);
+                return 1;
+            }
+            else if(passed == 3){
+                printf("Failed to create node: Parent with ID %s already has two children", switch1);
+                return 1;
+            }
             break;
         
         default:
-            printf("To many commands");
+            printf("To many arguments. Add takes 2 arguments, %d was given.", commandsNum - 1);
             break;
         }
         return 1;
@@ -176,19 +241,47 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
         switch (commandsNum)
         {
         case 1:
-            printf("load1");
+            printf("Not enought arguments. Load needs 1, 0 was given.");
             break;
-        
         case 2:
-            printf("load2");
+            if (strcmp(switch1, "s") == 0){
+            printf("Not enought arguments for \"load s\". expected 1, 0 was given");
+            }
+            else{
+                printf("Unknown argument for \"load\": %s", switch1);
+            }
             break;
-        
+
         case 3:
-            printf("load3");
+            if (strcmp(switch1, "s") == 0){
+                if (*saved != 0){
+                    printf("You have some unsaved work. Save it before loading a new tree!");
+                    return 1;
+                }
+                int nodesLoaded = loadSaved(root, switch2);
+                switch (nodesLoaded)
+                {
+                case -1:
+                    printf("Unable to load: No such file \"%s\"", switch2);
+                    break;
+                case -2:
+                    printf("Unable to load: File cursed.");
+                    break;
+                case -3:
+                    printf("Unable to load: No such file \"%s\"", switch2);
+                    break;
+                default:
+                    printf("Successfully loaded %d nodes.", nodesLoaded);
+                    break;
+                }
+                return 1;
+            }else{
+                printf("Unknown argument for \"load\": %s", switch1);
+            }
             break;
         
         default:
-            printf(" ");
+            printf("To many arguments. Load takes 1 argument, %d was given.", commandsNum - 1);
             break;
         }
         return 1;
@@ -197,19 +290,51 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
         switch (commandsNum)
         {
         case 1:
-            printf(" ");
+            if (*saved == 0){
+                printf("Nothing to save");
+                return 1;
+            }
+            int savedNum = saveLoaded(root, curentPath);
+            if (savedNum == -1){
+                printf("Nothing to save, NULL was given as root");                  //should not happen
+            }
+            else if (savedNum == -2){
+                printf("Failed to save working tree.");
+            }
+            else{
+                printf("Successfully saved %d nodes.", savedNum);
+                *saved = 0;
+            }
             break;
-        
         case 2:
-            printf(" ");
+            if (strcmp(switch1, "e") == 0){
+            printf("Not enought arguments for \"save e\". expected 1, 0 was given");
+            }
+            else{
+                printf("Unknown argument for \"save\": %s", switch1);
+            }
             break;
-        
         case 3:
-            printf(" ");
+            if (strcmp(switch1, "e") == 0){
+                int savedNum2 = saveLoaded(root, switch2);
+                if (savedNum2 == -1){
+                    printf("Nothing to save, NULL was given as root");                  //should not happen
+                }
+                else if (savedNum2 == -2){
+                    printf("Failed to save working tree.");
+                }
+                else{
+                    printf("Successfully saved %d nodes.", savedNum2);
+                    *saved = 0;
+                }
+            }
+            else{
+                printf("Unknown argument for \"save\": %s", switch1);
+            }
             break;
         
         default:
-            printf(" ");
+            printf("To many arguments. Save takes 1 argument max, %d was given.", commandsNum - 1);
             break;
         }
         return 1;
@@ -238,7 +363,20 @@ int uiAskCommand(struct node* root, struct node* current, char curentPath[], int
         }
         return 1;
     }
-
-
-    return 0;
+    else if (strcmp(command, "quit") == 0 || strcmp(command, "q") == 0){
+        switch (commandsNum)
+        {
+        case 1:
+            return 0;
+            break;
+        default:
+            printf("To many arguments. Quit takes no arguments, %d was given.", commandsNum - 1);
+            break;
+        }
+        return 1;
+    }
+    else {
+        printf("unknown command: \"%s\"", command);
+        return 1;
+    }
 }
