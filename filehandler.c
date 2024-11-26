@@ -11,7 +11,7 @@ int loadSaved(struct node* nodes, char* path){           //loads single node fro
     filePtr = fopen(path, "r");
 
     if (filePtr == NULL){                                           //stops loading, when the file does not exist
-        printf("Nothing is saved for the specified file!");
+        //printf("Nothing is saved for the specified file!");
         return -1;                                                  //the file does not exist, could not load
     }
 

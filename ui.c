@@ -110,6 +110,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 else{
                     struct node* newCurrent = current->parent;
                     treeDelNodes(current);
+                    printf("Node successfuly deleted");
                     current = newCurrent;
                     *current1 = current;
                 }
@@ -148,6 +149,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 }
                 else {
                     treeDelNodes(idStruct);
+                    printf("Node %d successfuly deleted", id);
                     *root1 = root;
                     *saved += 1;
                 }
@@ -160,6 +162,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     }
                     struct node* newCurrent = current->parent;
                     treeDelNodes(current);
+                    printf("Nodes successfuly deleted");
                     current = newCurrent;
                     *current1 = current;
                     *saved += 1;
@@ -214,9 +217,9 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
         case 3:
             int passed = treeAddNode(root, atoi(switch1), atoi(switch2));
             if (passed == 0){
-                printf("Successfully created node with parent %s and id %s", switch1, switch2);
-                return 1;
+                printf("Successfully created node with parent %s and ID %s", switch1, switch2);
                 *saved += 1;
+                return 1;
             }else if(passed == 1){
                 printf("Failed to create node: ID %s is occupied", switch2);
                 return 1;
@@ -272,6 +275,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     break;
                 default:
                     printf("Successfully loaded %d nodes.", nodesLoaded);
+                    strcpy(curentPath, switch2);
                     break;
                 }
                 return 1;
