@@ -12,8 +12,14 @@ int main(){
         printf("Not enought memory, exiting application...");
         return 1;                                                       //return error value 1 for insuficient memory
     }
+
+    struct node* current = root;
+    char currentPath[2048] = "";
+    int saved = 0;
     
-    int ui = uiAskCommand(root);
+    while (uiAskCommand(root, current, currentPath, &saved));           //application mainloop
+
+    printf("Exiting application...");
 
     return 0;
 }

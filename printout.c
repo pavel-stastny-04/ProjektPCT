@@ -15,10 +15,10 @@ void printNode(struct node nodeP){
     return;
 }
 
-void help(){
+void help(){                                            //prints help info
     printf("Helped");
 }
 
-void printTree(struct node tree){                                               //prints out the whole tree graphically
+void printTree(struct node* tree){                                               //prints out the whole tree graphically
     printf("There will be printed tree;)");
 }

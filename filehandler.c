@@ -113,10 +113,10 @@ int saveLoaded(struct node* root, char path[]){
     }
 }
 
-void filePrintTree(struct node tree, char path[]){                                               //prints out the whole tree graphically into file on given path
+void filePrintTree(struct node* tree, char path[]){                                               //prints out the whole tree graphically into file on given path
     printf("There will be printed tree;)");
 }
 
-void filePrintNode(struct node tree, char path[]){                                               //prints out given node into file on given path
+void filePrintNode(struct node* tree, char path[]){                                               //prints out given node into file on given path
     printf("There will be printed node;)");
 }
