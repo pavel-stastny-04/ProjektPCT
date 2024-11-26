@@ -18,3 +18,7 @@ void printNode(struct node nodeP){
 void help(){
     printf("Helped");
 }
+
+void printTree(struct node tree){                                               //prints out the whole tree graphically
+    printf("There will be printed tree;)");
+}

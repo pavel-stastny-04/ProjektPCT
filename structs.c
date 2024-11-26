@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 struct node* createNode(){                                      //create a new node in the memory and clears it
-    struct node* newNode = malloc(sizeof(struct node));
+    struct node* newNode = (struct node*) malloc(sizeof(struct node));
     if (newNode != NULL){
         newNode->child1=0;
         newNode->child2=0;

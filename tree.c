@@ -38,8 +38,16 @@ int treeAddNode(struct node* root, int parentId, int childId){                  
 }
 
 
-int treeDelNodes(struct node* root);                                                //recursively delete all nodes under given node
-
+void treeDelNodes(struct node* root){                                                //recursively delete all nodes under given node
+    if (root->childOne == NULL && root->childTwo == NULL){
+        delNode(root);
+    }
+    else{
+        treeDelNodes(root->childOne);
+        treeDelNodes(root->childTwo);
+        delNode(root);
+    }
+}
 
 int treeHasChildren(struct node* node){                                             //returns number of children given node has
     if (node->child1 != 0 && node->child2 != 0){
@@ -49,4 +57,28 @@ int treeHasChildren(struct node* node){                                         
         return 1;
     }
     return 0;
+}
+
+int treeFindDepth(struct node* node){                                               //finds depth of given tree (how many "generations" are there)
+    int depth = 0;
+    if (node == NULL){
+        return depth;
+    }
+    if (node->childOne == NULL && node->childTwo == NULL){
+        return 1;
+    }
+    if (node->childOne != NULL){
+        int childDepth = treeFindDepth(node->childOne);
+        if (childDepth > depth){
+            depth = childDepth;
+        }
+    }
+    if (node->childTwo != NULL){
+        int childDepth = treeFindDepth(node->childTwo);
+        if (childDepth > depth){
+            depth = childDepth;
+        }
+    }
+    depth++;
+    return depth;
 }
