@@ -65,7 +65,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
             break;
         case 2:
             if (strcmp(switch1, "a") == 0){
-                printTree(root);
+                printTree(root, current);
             }
             else if (strcmp(switch1, "c") == 0){
                 printNode(*current);
@@ -130,7 +130,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 }
                 if (children != 0){
                     char answer = 'n';
-                    printf("Selected node has %d children. Are you sure you want to delete it (y/n): ", children);
+                    printf("Selected node has %d children. Are you sure you want to delete it (Y/N): ", children);
                     scanf("%c", &answer);
                     if (answer == 'y' || answer == 'Y'){
                         treeDelNodes(idStruct);
@@ -191,6 +191,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 }
                 current = idStruct;
                 *current1 = current;
+                printf("Switching to node %d", id);
             break;
         default:
             printf("To many arguments. Checkout takes 1 argument, %d was given.", commandsNum - 1);
@@ -360,6 +361,24 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
         switch (commandsNum)
         {
         case 1:
+            if (*saved != 0){
+                char ansver = ' ';
+                printf("You have some unsaved work. Do you want to save it? (Y/N): ");
+                scanf("%c", &ansver);
+                if (ansver == 'y' || ansver == 'Y'){
+                    int savedNum2 = saveLoaded(root, curentPath);
+                    if (savedNum2 == -1){
+                        printf("Nothing to save, NULL was given as root\n");                  //should not happen
+                    }
+                    else if (savedNum2 == -2){
+                        printf("Failed to save working tree.\n");
+                    }
+                    else{
+                        printf("Successfully saved %d nodes.\n", savedNum2);
+                        *saved = 0;
+                    }
+                }
+            }
             return 0;
             break;
         default:

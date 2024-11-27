@@ -148,10 +148,27 @@ void filePrintTreeR(FILE* file, struct node* tree, int depth, int dash){
 void filePrintTree(struct node* tree, char path[]){                                               //prints out the whole tree graphically into file on given path
     FILE *filePtr;
     filePtr = fopen(path, "w");
+    if (filePtr == NULL){
+        printf("Unable to save into %s", path);
+        return;
+    }
     filePrintTreeR(filePtr, tree, 2, 0);
     fclose(filePtr);
+    printf("Tree successfuly saved");
 }
 
 void filePrintNode(struct node* tree, char path[]){                                               //prints out given node into file on given path
-    printf("There will be printed node;)");
+    FILE *filePtr;
+    filePtr = fopen(path, "a");
+    if (filePtr == NULL){
+        printf("Unable to save into %s", path);
+        return;
+    }
+    fprintf(filePtr, "ID: %d\n", tree->ID);
+    fprintf(filePtr, "Parent_i: %d\n", tree->parent_i);
+    fprintf(filePtr, "Child1: %d\n", tree->child1);
+    fprintf(filePtr, "Child2: %d\n\n", tree->child2);
+    fclose(filePtr);
+    printf("Node %d succesfuly added into %s", tree->ID, path);
+    return;
 }

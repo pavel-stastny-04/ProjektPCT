@@ -20,7 +20,7 @@ int main(){
     
     while (uiAskCommand(&root, &current, currentPath, &saved));           //application mainloop
 
-    printf("Exiting application...");
+    printf("Exiting application...\n");
 
     return 0;
 }

@@ -33,12 +33,12 @@ void help(){                                            //prints help info
     printf("  save e [path]         -> save tree into specified file");
 }
 
-void printTreeR(struct node* tree, int depth, int dash){
+void printTreeR(struct node* tree, int depth, int dash, struct node* current){
     if (tree == NULL){
         printf("\n");
         return;
     }
-    printTreeR(tree->childOne, depth + 6, 1);
+    printTreeR(tree->childOne, depth + 6, 1, current);
     
     for (int i = 0; i < depth - 1; i++){
         printf(" ");
@@ -52,19 +52,37 @@ void printTreeR(struct node* tree, int depth, int dash){
     else{
         printf("-");
     }
-    if (tree->ID < 10){
-        printf("[-%d-]", tree->ID);
+
+    if (tree == current){
+        printf("{");
     }
-    else if (tree->ID < 100){
-        printf("[-%d]", tree->ID);
-    }
-    else{
-        printf("[%d]", tree->ID);
+    else {
+        printf("[");
     }
 
-    printTreeR(tree->childTwo, depth + 6, -1);
+    if (tree->ID < 10 && tree->ID >= 0){
+        printf(" %d ", tree->ID);
+    }
+    else if (tree->ID < 100 && tree->ID > -10){
+        printf(" %d", tree->ID);
+    }
+    else {
+        printf("%d", tree->ID);
+    }
+
+    if (tree == current){
+        printf("}");
+    }
+    else {
+        printf("]");
+    }
+
+
+    printTreeR(tree->childTwo, depth + 6, -1, current);
 }
 
-void printTree(struct node* tree){                                               //prints out the whole tree graphically
-    printTreeR(tree, 2, 0);
+void printTree(struct node* tree, struct node* current){                                               //prints out the whole tree graphically
+    printTreeR(tree, 2, 0, current);
 }
+
+//load s /home/pavel/SCHOOL/2024-2025/Winter/PC1T/ProjektPCT/test2.tree

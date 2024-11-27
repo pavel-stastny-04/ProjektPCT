@@ -39,7 +39,7 @@ int treeAddNode(struct node* root, int parentId, int childId){                  
 
 
 void treeDelNodes(struct node* root){                                                //recursively delete all nodes under given node
-    if (root->childOne == NULL && root->childTwo == NULL){
+    if (!(root->childOne == NULL && root->childTwo == NULL)){
         if (root->parent->childOne == root){
             root->parent->childOne = NULL;
             root->parent->child1 = 0;
