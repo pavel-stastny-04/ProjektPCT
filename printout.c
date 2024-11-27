@@ -7,11 +7,11 @@
 void printNode(struct node nodeP){
     printf("ID: %d\n", nodeP.ID);
     printf("Parent_i: %d\n", nodeP.parent_i);
-    printf("Parent: %p\n", nodeP.parent);
+    //printf("Parent: %p\n", nodeP.parent);
     printf("Child1: %d\n", nodeP.child1);
-    printf("ChildOne: %p\n", nodeP.childOne);
-    printf("Child2: %d\n", nodeP.child2);
-    printf("ChildTwo: %p\n\n", nodeP.childTwo);
+    //printf("ChildOne: %p\n", nodeP.childOne);
+    printf("Child2: %d", nodeP.child2);
+    //printf("ChildTwo: %p\n\n", nodeP.childTwo);
     return;
 }
 
@@ -33,6 +33,38 @@ void help(){                                            //prints help info
     printf("  save e [path]         -> save tree into specified file");
 }
 
+void printTreeR(struct node* tree, int depth, int dash){
+    if (tree == NULL){
+        printf("\n");
+        return;
+    }
+    printTreeR(tree->childOne, depth + 6, 1);
+    
+    for (int i = 0; i < depth - 1; i++){
+        printf(" ");
+    }
+    if (dash == 1){
+        printf("/ ");
+    }
+    else if (dash == -1){
+        printf("\\ ");
+    }
+    else{
+        printf("-");
+    }
+    if (tree->ID < 10){
+        printf("[-%d-]", tree->ID);
+    }
+    else if (tree->ID < 100){
+        printf("[-%d]", tree->ID);
+    }
+    else{
+        printf("[%d]", tree->ID);
+    }
+
+    printTreeR(tree->childTwo, depth + 6, -1);
+}
+
 void printTree(struct node* tree){                                               //prints out the whole tree graphically
-    printf("There will be printed tree;)");
+    printTreeR(tree, 2, 0);
 }
