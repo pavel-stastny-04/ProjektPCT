@@ -183,7 +183,8 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
             printf("Not enought arguments. Checkout needs 1, 0 was given.");
             break;
         case 2:
-            int id = atoi(switch1);
+            if (0 == 0){
+                int id = atoi(switch1);
                 struct node* idStruct = findNodeById(root, id);
                 if (idStruct == NULL){
                     printf("unable to switch to node with id %d: Does not exist!", id);
@@ -192,6 +193,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 current = idStruct;
                 *current1 = current;
                 printf("Switching to node %d", id);
+            }
             break;
         default:
             printf("To many arguments. Checkout takes 1 argument, %d was given.", commandsNum - 1);
@@ -209,22 +211,24 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
             printf("Not enought arguments. Add needs 2, 1 was given.");
             break;
         case 3:
-            int passed = treeAddNode(root, atoi(switch1), atoi(switch2));
-            if (passed == 0){
-                printf("Successfully created node with parent %s and ID %s", switch1, switch2);
-                *saved += 1;
-                return 1;
-            }else if(passed == 1){
-                printf("Failed to create node: ID %s is occupied", switch2);
-                return 1;
-            }
-            else if(passed == 2){
-                printf("Failed to create node: Parent with ID %s does not exist.", switch1);
-                return 1;
-            }
-            else if(passed == 3){
-                printf("Failed to create node: Parent with ID %s already has two children", switch1);
-                return 1;
+            if (0 == 0){
+                int passed = treeAddNode(root, atoi(switch1), atoi(switch2));
+                if (passed == 0){
+                    printf("Successfully created node with parent %s and ID %s", switch1, switch2);
+                    *saved += 1;
+                    return 1;
+                }else if(passed == 1){
+                    printf("Failed to create node: ID %s is occupied", switch2);
+                    return 1;
+                }
+                else if(passed == 2){
+                    printf("Failed to create node: Parent with ID %s does not exist.", switch1);
+                    return 1;
+                }
+                else if(passed == 3){
+                    printf("Failed to create node: Parent with ID %s already has two children", switch1);
+                    return 1;
+                }
             }
             break;
         default:
