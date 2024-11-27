@@ -113,8 +113,43 @@ int saveLoaded(struct node* root, char path[]){
     }
 }
 
+void filePrintTreeR(FILE* file, struct node* tree, int depth, int dash){
+    if (tree == NULL){
+        fprintf(file, "\n");
+        return;
+    }
+    filePrintTreeR(file, tree->childOne, depth + 6, 1);
+    
+    for (int i = 0; i < depth - 1; i++){
+        fprintf(file, " ");
+    }
+    if (dash == 1){
+        fprintf(file, "/ ");
+    }
+    else if (dash == -1){
+        fprintf(file, "\\ ");
+    }
+    else{
+        fprintf(file, "-");
+    }
+    if (tree->ID < 10){
+        fprintf(file, "[-%d-]", tree->ID);
+    }
+    else if (tree->ID < 100){
+        fprintf(file, "[-%d]", tree->ID);
+    }
+    else{
+        fprintf(file, "[%d]", tree->ID);
+    }
+
+    filePrintTreeR(file, tree->childTwo, depth + 6, -1);
+}
+
 void filePrintTree(struct node* tree, char path[]){                                               //prints out the whole tree graphically into file on given path
-    printf("There will be printed tree;)");
+    FILE *filePtr;
+    filePtr = fopen(path, "w");
+    filePrintTreeR(filePtr, tree, 2, 0);
+    fclose(filePtr);
 }
 
 void filePrintNode(struct node* tree, char path[]){                                               //prints out given node into file on given path
