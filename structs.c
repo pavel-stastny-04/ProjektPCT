@@ -8,6 +8,7 @@
 struct node* createNode(){                                      //create a new node in the memory and clears it
     struct node* newNode = (struct node*) malloc(sizeof(struct node));
     if (newNode != NULL){
+        newNode->ID=0;
         newNode->child1=0;
         newNode->child2=0;
         newNode->parent_i=0;
