@@ -102,6 +102,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 int children = treeHasChildren(current);
                 if (children != 0){
                     printf("Unable to delete node: Node has %d child(ren).\nTo remove it, try using \"del c r\" command.", children);
+                    return 1;
                 }
                 else{
                     struct node* newCurrent = current->parent;
@@ -109,10 +110,12 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     printf("Node successfuly deleted");
                     current = newCurrent;
                     *current1 = current;
+                    return 1;
                 }
             }
             else {
                 printf("Unknown argument for \"del\": %s", switch1);
+                return 1;
             }
             break;
         case 3:
@@ -136,6 +139,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                         treeDelNodes(idStruct);
                         *root1 = root;
                         *saved += 1;
+                        return 1;
                     }
                 }
                 else if (id == current->ID){
@@ -147,6 +151,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     printf("Node %d successfuly deleted", id);
                     *root1 = root;
                     *saved += 1;
+                    return 1;
                 }
             }
             else if (strcmp(switch1, "c") == 0){
@@ -161,6 +166,7 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     current = newCurrent;
                     *current1 = current;
                     *saved += 1;
+                    return 1;
                 }
                 else{
                     printf("Unknown argument for \"del c\": %s", switch2);
@@ -341,7 +347,8 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
         switch (commandsNum)
         {
         case 1:
-            system("clear");
+            system("clear");                       //for linux
+            //system("cls");                       //for windows
             break;
         default:
             printf("To many arguments. Clear takes no arguments, %d was given.", commandsNum - 1);
