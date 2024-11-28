@@ -132,11 +132,11 @@ void filePrintTreeR(FILE* file, struct node* tree, int depth, int dash){
     else{
         fprintf(file, "-");
     }
-    if (tree->ID < 10){
-        fprintf(file, "[-%d-]", tree->ID);
+    if (tree->ID < 10 && tree->ID >= 0){
+        fprintf(file, "[ %d ]", tree->ID);
     }
-    else if (tree->ID < 100){
-        fprintf(file, "[-%d]", tree->ID);
+    else if (tree->ID < 100 && tree->ID > -10){
+        fprintf(file, "[ %d]", tree->ID);
     }
     else{
         fprintf(file, "[%d]", tree->ID);
