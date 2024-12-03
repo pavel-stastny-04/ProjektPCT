@@ -8,6 +8,17 @@
 #include "tree.h"
 
 
+int isnumber(char string[]){
+    int i = 0;
+    while (string[i] != '\0'){
+        if ((string[i] < 48 || string[i] > 57) && !(string[i] == '-' && isdigit(string[i + 1]) != 0)){
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
 
 int uiAskCommand(struct node** root1, struct node** current1, char curentPath[], int* saved){                                                         //Asks user for command to do
     struct node* current = *current1;
@@ -135,10 +146,14 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     char answer = 'n';
                     printf("Selected node has %d children. Are you sure you want to delete it (Y/N): ", children);
                     scanf("%c", &answer);
+                    while ((getchar()) != '\n');
                     if (answer == 'y' || answer == 'Y'){
                         treeDelNodes(idStruct);
                         *root1 = root;
                         *saved += 1;
+                        return 1;
+                    }
+                    else{
                         return 1;
                     }
                 }
@@ -217,7 +232,27 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
             printf("Not enought arguments. Add needs 2, 1 was given.");
             break;
         case 3:
-            if (0 == 0){
+            if (strcmp(switch1, "c") == 0 && isnumber(switch2)){
+                if (current == NULL){
+                    printf("Unable to create node, current node does not exist");                    //should not happen
+                    return 1;
+                }
+                int passed = treeAddNode(root, current->ID, atoi(switch2));
+                if (passed == 0){
+                    printf("Successfully created node with parent %d and ID %s", current->ID, switch2);
+                    *saved += 1;
+                    return 1;
+                }else if(passed == 1){
+                    printf("Failed to create node: ID %s is occupied", switch2);
+                    return 1;
+                }
+                else if(passed == 3){
+                    printf("Failed to create node: Parent with ID %d already has two children", current->ID);
+                    return 1;
+                }
+                return 1;
+            }
+            else if (isnumber(switch1) && isnumber(switch2)){
                 int passed = treeAddNode(root, atoi(switch1), atoi(switch2));
                 if (passed == 0){
                     printf("Successfully created node with parent %s and ID %s", switch1, switch2);
@@ -235,6 +270,10 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                     printf("Failed to create node: Parent with ID %s already has two children", switch1);
                     return 1;
                 }
+            }
+            else{
+                printf("Unknown parameter(s) for add: \"%s %s\"", switch1, switch2);
+                return 1;
             }
             break;
         default:
@@ -297,6 +336,10 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
         case 1:
             if (*saved == 0){
                 printf("Nothing to save");
+                return 1;
+            }
+            if (curentPath[0] == '\0'){
+                printf("Unable to save, path to file was not specified");
                 return 1;
             }
             int savedNum = saveLoaded(root, curentPath);
@@ -376,17 +419,42 @@ int uiAskCommand(struct node** root1, struct node** current1, char curentPath[],
                 char ansver = ' ';
                 printf("You have some unsaved work. Do you want to save it? (Y/N): ");
                 scanf("%c", &ansver);
+                while ((getchar()) != '\n');                                            //clear buffer
                 if (ansver == 'y' || ansver == 'Y'){
-                    int savedNum2 = saveLoaded(root, curentPath);
-                    if (savedNum2 == -1){
-                        printf("Nothing to save, NULL was given as root\n");                  //should not happen
+                    if (curentPath[0] != '\0'){
+                        int savedNum2 = saveLoaded(root, curentPath);
+                        if (savedNum2 == -1){
+                            printf("Nothing to save, NULL was given as root\n");                  //should not happen
+                        }
+                        else if (savedNum2 == -2){
+                            printf("Failed to save working tree.\n");
+                            return 1;
+                        }
+                        else{
+                            printf("Successfully saved %d nodes.\n", savedNum2);
+                            *saved = 0;
+                        }
                     }
-                    else if (savedNum2 == -2){
-                        printf("Failed to save working tree.\n");
-                    }
-                    else{
-                        printf("Successfully saved %d nodes.\n", savedNum2);
-                        *saved = 0;
+                    else {
+                        char path[2048] = "";
+                        printf("Enter file path: ");
+                        fgets(path, 2048, stdin);
+                        if (path[0] == '\n'){
+                            printf("Entered path is invalid");
+                            return 1;
+                        }
+                        int savedNum2 = saveLoaded(root, path);
+                        if (savedNum2 == -1){
+                            printf("Nothing to save, NULL was given as root\n");                  //should not happen
+                        }
+                        else if (savedNum2 == -2){
+                            printf("Failed to save working tree.\n");
+                            return 1;
+                        }
+                        else{
+                            printf("Successfully saved %d nodes.\n", savedNum2);
+                            *saved = 0;
+                        }
                     }
                 }
             }

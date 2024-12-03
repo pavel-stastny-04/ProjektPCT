@@ -53,14 +53,18 @@ void treeDelNodes(struct node* root){                                           
     else{
         if (root->childOne != NULL){
             treeDelNodes(root->childOne);
-            root->parent->childOne = NULL;
-            root->parent->child1 = 0;
             }
         if (root->childTwo != NULL){
             treeDelNodes(root->childTwo);
+            }
+        if (root->parent->childOne == root){
+            root->parent->childOne = NULL;
+            root->parent->child1 = 0;
+        }
+        else if (root->parent->childTwo == root){
             root->parent->childTwo = NULL;
             root->parent->child2 = 0;
-            }
+        }
         delNode(root);
     }
 }

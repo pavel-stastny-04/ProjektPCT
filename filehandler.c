@@ -97,6 +97,9 @@ int saveLoaded(struct node* root, char path[]){
     int len = 1;
     FILE *filePtr;
     filePtr = fopen(path, "w");
+    if (filePtr == NULL){
+        return -2;
+    }
 
     int isOK = saveNodes(filePtr, root, &len);
     

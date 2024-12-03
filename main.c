@@ -12,7 +12,7 @@ int main(){
         printf("Not enought memory, exiting application...");
         return 1;                                                       //return error value 1 for insuficient memory
     }
-    printf("BinaryTreeSoft v-1.1\nRoot node successfuly initialized.\nStart session by loading saved tree using \"load s [path]\",\nor by adding a node using \"add [parent] [id]\".");
+    printf("BinaryTreeSoft v-1.2\nRoot node successfuly initialized.\nStart session by loading saved tree using \"load s [path]\",\nor by adding a node using \"add [parent] [id]\".");
 
     struct node* current = root;
     char currentPath[2048] = "";
